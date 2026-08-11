@@ -1,0 +1,42 @@
+# Dashboard Portal — link list
+#
+# One block per dashboard card. To add a new one, copy a block below,
+# change the values, and leave a blank line between blocks.
+# Lines starting with # are ignored.
+#
+# Fields:
+#   title = card title
+#   tag   = short label (tech/type shown on the card)
+#   desc  = one-line description
+#   embed = URL loaded inline in the viewer (must be a live GitHub Pages
+#           URL — a plain github.com repo page cannot be embedded)
+#   repo  = GitHub repo URL (used for "View repo" and as a fallback link)
+#   live  = true once embed is a real working page, false while pending
+
+title: Outlet Network Dashboard
+tag: HTML
+desc: Regional Head / Zonal / Outlet sales performance vs target, with launch-year and directory views.
+embed: https://operations-t.github.io/outlet-network-dashboard/
+repo: https://github.com/operations-t/outlet-network-dashboard
+live: true
+
+title: Item Dashboard
+tag: JavaScript
+desc: Regional Head, Zonal, Outlet, Category and SKU performance analysis.
+embed: https://operations-t.github.io/Item-Dashboard/
+repo: https://github.com/operations-t/Item-Dashboard
+live: true
+
+title: Item Dashboard 2
+tag: JavaScript
+desc: Sales growth & de-growth dashboard, Google Drive connected edition.
+embed: https://operations-t.github.io/Item-Dashboard-2/
+repo: https://github.com/operations-t/Item-Dashboard-2
+live: true
+
+title: Monthly To-Do Tracker
+tag: JavaScript
+desc: 22 recurring monthly tasks with cloud sync and PNG/JPG exports. Deploy pending.
+embed: https://operations-t.github.io/to-do/
+repo: https://github.com/operations-t/to-do
+live: false
