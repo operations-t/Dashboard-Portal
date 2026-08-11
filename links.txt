@@ -27,13 +27,6 @@ embed: https://operations-t.github.io/Item-Dashboard/
 repo: https://github.com/operations-t/Item-Dashboard
 live: true
 
-title: Item Dashboard 2
-tag: JavaScript
-desc: Sales growth & de-growth dashboard, Google Drive connected edition.
-embed: https://operations-t.github.io/Item-Dashboard-2/
-repo: https://github.com/operations-t/Item-Dashboard-2
-live: true
-
 title: Monthly To-Do Tracker
 tag: JavaScript
 desc: 22 recurring monthly tasks with cloud sync and PNG/JPG exports. Deploy pending.
