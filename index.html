@@ -34,8 +34,6 @@
     position:relative;
     overflow-x:hidden;
   }
-
-  /* ambient grid + scan sweep */
   body::before{
     content:"";
     position:fixed;
@@ -69,7 +67,7 @@
     justify-content:space-between;
     padding:22px 48px;
     border-bottom:1px solid var(--line);
-    background:rgba(4,7,13,0.7);
+    background:rgba(4,7,13,0.85);
     backdrop-filter:blur(6px);
     position:sticky;
     top:0;
@@ -92,7 +90,7 @@
     letter-spacing:0.3px;
   }
 
-  nav{display:flex; gap:6px;}
+  nav{display:flex; gap:6px; flex-wrap:wrap;}
   nav a{
     font-family:var(--font-mono);
     font-size:11px;
@@ -104,11 +102,16 @@
     border:1px solid transparent;
     border-radius:4px;
     transition:all .18s;
+    cursor:pointer;
   }
-  nav a:hover, nav a.active{
+  nav a:hover{
+    color:var(--text);
+    border-color:var(--line);
+  }
+  nav a.active{
     color:var(--accent);
     border-color:var(--accent-dim);
-    background:rgba(45,227,255,0.06);
+    background:rgba(45,227,255,0.08);
   }
 
   main{max-width:1180px; margin:0 auto; padding:64px 48px 40px;}
@@ -189,12 +192,15 @@
   .card::after{top:-1px; right:-1px; border-left:none; border-bottom:none;}
   .card .bl{position:absolute; bottom:-1px; left:-1px; border-right:none; border-top:none;}
   .card .br{position:absolute; bottom:-1px; right:-1px; border-left:none; border-top:none;}
-  .card:hover{
+  .card:hover, .card.selected{
     transform:translateY(-2px);
     box-shadow:0 8px 28px rgba(45,227,255,0.08);
   }
   .card:hover::before, .card:hover::after,
-  .card:hover .bl, .card:hover .br{ opacity:1; }
+  .card:hover .bl, .card:hover .br,
+  .card.selected::before, .card.selected::after,
+  .card.selected .bl, .card.selected .br{ opacity:1; }
+  .card.selected{ border-color:var(--accent-dim); }
 
   .card-top{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;}
   .card-id{
@@ -245,12 +251,12 @@
   }
   .card-foot .repo-link:hover{ color:var(--text); }
 
-  /* viewer */
   .viewer-frame{
     position:relative;
     border:1px solid var(--line);
     background:var(--bg-panel);
     min-height:560px;
+    scroll-margin-top:90px;
   }
   .viewer-frame::before, .viewer-frame::after{
     content:"";
@@ -316,6 +322,15 @@
   }
   .viewer-fallback a{ color:var(--accent); text-decoration:none; }
 
+  .loaderr{
+    padding:60px 20px;
+    text-align:center;
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:1px;
+    color:var(--muted);
+  }
+
   footer{
     text-align:center;
     padding:26px;
@@ -327,7 +342,7 @@
   }
 </style>
 </head>
-<body>
+<body id="top">
 <div class="sweep"></div>
 
 <header>
@@ -347,10 +362,10 @@
   <p class="sub">Single access point for operations-t modules. Select a module to load it below, or open it directly in a new tab.</p>
 
   <div class="section-label">Select a module</div>
-  <div class="grid" id="cardGrid"></div>
+  <div class="grid" id="cardGrid"><div class="loaderr">Loading modules from links.txt…</div></div>
 
   <div class="section-label">Viewer</div>
-  <div class="viewer-frame">
+  <div class="viewer-frame" id="viewer">
     <div class="viewer-bar">
       <span>MODULE: <span class="module" id="activeModule">— none selected —</span></span>
       <a href="#" id="openFull" target="_blank" rel="noopener" style="display:none;">Open full page →</a>
@@ -368,60 +383,41 @@
   </div>
 </main>
 
-<footer>OPERATIONS-T · 4 MODULES REGISTERED</footer>
+<footer id="footerCount">OPERATIONS-T · LOADING MODULES…</footer>
 
 <script>
 /* ============================================================
-   LINK CONFIG — edit this list to change what each card points to.
-   id        : short code shown on the card
-   title     : card title
-   tag       : small status label (e.g. tech stack)
-   desc      : one-line description
-   embedUrl  : page loaded inline in the viewer (must allow iframing —
-               plain github.com repo pages CANNOT be embedded, only
-               live GitHub Pages / hosted sites can)
-   repoUrl   : GitHub repo, used for "view repo" and as fallback
-   live      : true once embedUrl is a real working page
+   Links are NOT hardcoded here. They are read from links.txt
+   in this same repository at runtime. To add, remove, or edit
+   a dashboard, just edit links.txt — no code changes needed.
 ============================================================ */
-const MODULES = [
-  {
-    id: "01",
-    title: "Outlet Network Dashboard",
-    tag: "HTML",
-    desc: "Regional Head / Zonal / Outlet sales performance vs target, with launch-year and directory views.",
-    embedUrl: "https://operations-t.github.io/outlet-network-dashboard/",
-    repoUrl: "https://github.com/operations-t/outlet-network-dashboard",
-    live: true
-  },
-  {
-    id: "02",
-    title: "Item Dashboard",
-    tag: "JavaScript",
-    desc: "Regional Head, Zonal, Outlet, Category and SKU performance analysis.",
-    embedUrl: "https://operations-t.github.io/Item-Dashboard/",
-    repoUrl: "https://github.com/operations-t/Item-Dashboard",
-    live: true
-  },
-  {
-    id: "03",
-    title: "Item Dashboard 2",
-    tag: "JavaScript",
-    desc: "Sales growth & de-growth dashboard, Google Drive connected edition.",
-    embedUrl: "https://operations-t.github.io/Item-Dashboard-2/",
-    repoUrl: "https://github.com/operations-t/Item-Dashboard-2",
-    live: true
-  },
-  {
-    id: "04",
-    title: "Monthly To-Do Tracker",
-    tag: "JavaScript",
-    desc: "22 recurring monthly tasks with cloud sync and PNG/JPG exports. Deploy pending.",
-    embedUrl: "https://operations-t.github.io/to-do/",
-    repoUrl: "https://github.com/operations-t/to-do",
-    live: false
-  }
-];
-/* ============================================================ */
+
+function parseLinksText(text){
+  const blocks = text
+    .split(/\r?\n\s*\r?\n/)
+    .map(b => b.split(/\r?\n/).filter(l => l.trim() && !l.trim().startsWith('#')))
+    .filter(b => b.length);
+
+  return blocks.map((lines, i) => {
+    const obj = {};
+    lines.forEach(line => {
+      const idx = line.indexOf(':');
+      if (idx === -1) return;
+      const key = line.slice(0, idx).trim().toLowerCase();
+      const val = line.slice(idx + 1).trim();
+      obj[key] = val;
+    });
+    return {
+      id: String(i + 1).padStart(2, '0'),
+      title: obj.title || 'Untitled module',
+      tag: obj.tag || '',
+      desc: obj.desc || '',
+      embedUrl: obj.embed || '#',
+      repoUrl: obj.repo || '#',
+      live: (obj.live || '').toLowerCase() === 'true'
+    };
+  }).filter(m => m.title !== 'Untitled module' || m.embedUrl !== '#');
+}
 
 const nav = document.getElementById('nav');
 const cardGrid = document.getElementById('cardGrid');
@@ -431,41 +427,31 @@ const viewerFallback = document.getElementById('viewerFallback');
 const fallbackLink = document.getElementById('fallbackLink');
 const activeModule = document.getElementById('activeModule');
 const openFull = document.getElementById('openFull');
+const footerCount = document.getElementById('footerCount');
+const viewerFrame = document.getElementById('viewer');
 
-const homeLink = document.createElement('a');
-homeLink.href = '#top';
-homeLink.textContent = 'Home';
-homeLink.classList.add('active');
-nav.appendChild(homeLink);
+let MODULES = [];
+let cardEls = [];
+let navEls = [];
 
-MODULES.forEach(m => {
-  const navLink = document.createElement('a');
-  navLink.href = '#viewer';
-  navLink.textContent = m.title;
-  navLink.addEventListener('click', (e) => { e.preventDefault(); loadModule(m); });
-  nav.appendChild(navLink);
+function setActive(index){
+  cardEls.forEach((c, i) => c.classList.toggle('selected', i === index));
+  navEls.forEach((n, i) => n.classList.toggle('active', i === index));
+}
 
-  const card = document.createElement('a');
-  card.className = 'card';
-  card.href = '#viewer';
-  card.innerHTML = `
-    <span class="bl"></span><span class="br"></span>
-    <div class="card-top">
-      <span class="card-id">${m.id}</span>
-      <span class="status ${m.live ? 'live' : ''}"><span class="dot"></span>${m.live ? 'Live' : 'Standby'}</span>
-    </div>
-    <h2>${m.title}</h2>
-    <p>${m.desc}</p>
-    <div class="card-foot">
-      <span>Engage →</span>
-      <a class="repo-link" href="${m.repoUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">View repo</a>
-    </div>
-  `;
-  card.addEventListener('click', (e) => { e.preventDefault(); loadModule(m); });
-  cardGrid.appendChild(card);
-});
+function resetHome(){
+  setActive(-1);
+  activeModule.textContent = '— none selected —';
+  openFull.style.display = 'none';
+  iframe.style.display = 'none';
+  iframe.src = 'about:blank';
+  viewerFallback.style.display = 'none';
+  viewerEmpty.style.display = 'flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-function loadModule(m){
+function loadModule(m, index){
+  setActive(index);
   activeModule.textContent = m.title.toUpperCase();
   openFull.href = m.embedUrl;
   openFull.style.display = 'inline';
@@ -474,9 +460,68 @@ function loadModule(m){
   iframe.src = m.embedUrl;
   fallbackLink.href = m.repoUrl;
   viewerFallback.style.display = m.live ? 'none' : 'block';
-  document.getElementById('viewer') || (document.querySelector('.viewer-frame').id = 'viewer');
-  document.querySelector('.viewer-frame').scrollIntoView({behavior:'smooth', block:'start'});
+  viewerFrame.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+function render(){
+  nav.innerHTML = '';
+  cardGrid.innerHTML = '';
+  cardEls = [];
+  navEls = [];
+
+  const homeLink = document.createElement('a');
+  homeLink.href = '#top';
+  homeLink.textContent = 'Home';
+  homeLink.classList.add('active');
+  homeLink.addEventListener('click', (e) => { e.preventDefault(); resetHome(); });
+  nav.appendChild(homeLink);
+
+  MODULES.forEach((m, i) => {
+    const navLink = document.createElement('a');
+    navLink.href = '#viewer';
+    navLink.textContent = m.title;
+    navLink.addEventListener('click', (e) => { e.preventDefault(); loadModule(m, i); });
+    nav.appendChild(navLink);
+    navEls.push(navLink);
+
+    const card = document.createElement('a');
+    card.className = 'card';
+    card.href = '#viewer';
+    card.innerHTML = `
+      <span class="bl"></span><span class="br"></span>
+      <div class="card-top">
+        <span class="card-id">${m.id}</span>
+        <span class="status ${m.live ? 'live' : ''}"><span class="dot"></span>${m.live ? 'Live' : 'Standby'}</span>
+      </div>
+      <h2>${m.title}</h2>
+      <p>${m.desc}</p>
+      <div class="card-foot">
+        <span>Engage →</span>
+        <a class="repo-link" href="${m.repoUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">View repo</a>
+      </div>
+    `;
+    card.addEventListener('click', (e) => { e.preventDefault(); loadModule(m, i); });
+    cardGrid.appendChild(card);
+    cardEls.push(card);
+  });
+
+  footerCount.textContent = `OPERATIONS-T · ${MODULES.length} MODULE${MODULES.length === 1 ? '' : 'S'} REGISTERED`;
+}
+
+fetch('./links.txt', { cache: 'no-store' })
+  .then(r => {
+    if (!r.ok) throw new Error('links.txt not found (' + r.status + ')');
+    return r.text();
+  })
+  .then(text => {
+    MODULES = parseLinksText(text);
+    if (!MODULES.length) throw new Error('links.txt has no valid entries');
+    render();
+  })
+  .catch(err => {
+    cardGrid.innerHTML = `<div class="loaderr">Could not load links.txt (${err.message}).<br>Add a links.txt file to the repository root — see the format described in its comments.</div>`;
+    footerCount.textContent = 'OPERATIONS-T · LINKS.TXT NOT FOUND';
+  });
 </script>
 </body>
 </html>
