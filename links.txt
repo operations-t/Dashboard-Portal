@@ -40,3 +40,10 @@ desc: Operations performance Consumable & Wastage Control.
 embed: https://operations-t.github.io/Consumable-Wastage/
 repo: https://github.com/operations-t/Consumable-Wastage
 live: true
+
+title: Availability Dashboard
+tag: JavaScript
+desc: Outlet-SKU performance
+embed: https://operations-t.github.io/Availability-Report/
+repo: https://github.com/operations-t/vailability-Report
+live: true
