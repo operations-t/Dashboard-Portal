@@ -23,7 +23,7 @@ live: true
 title: Item Dashboard
 tag: JavaScript
 desc: Regional Head, Zonal, Outlet, Category and SKU performance analysis.
-embed: https://operations-t.github.io/Item-Dashboard/
+embed: https://item-dashboard.shwapno.app/
 repo: https://github.com/operations-t/Item-Dashboard
 live: true
 
