@@ -20,11 +20,11 @@ embed: https://operations-t.github.io/outlet-network-dashboard/
 repo: https://github.com/operations-t/outlet-network-dashboard
 live: true
 
-title: Item Dashboard
+title: SKU Dashboard
 tag: JavaScript
 desc: Regional Head, Zonal, Outlet, Category and SKU performance analysis.
-embed: https://item-dashboard.shwapno.app/
-repo: https://github.com/operations-t/Item-Dashboard
+embed: https://sku_gr.shwapno.app/
+repo: https://github.com/Shwapno-AI/SKU_GR
 live: true
 
 title: Consumable-Wastage
