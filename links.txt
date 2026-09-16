@@ -30,8 +30,8 @@ live: true
 title: Consumable-Wastage
 tag: JavaScript
 desc: Operations performance Consumable & Wastage Control.
-embed: https://operations-t.github.io/Consumable-Wastage/
-repo: https://github.com/operations-t/Consumable-Wastage
+embed: https://operations-t.github.io/consumable-wastage-n/
+repo: https://github.com/operations-t/consumable-wastage-n
 live: true
 
 title: Availability Dashboard
