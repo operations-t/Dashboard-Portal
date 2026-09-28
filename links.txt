@@ -13,11 +13,11 @@
 #   repo  = GitHub repo URL (used for "View repo" and as a fallback link)
 #   live  = true once embed is a real working page, false while pending
 
-title: Outlet Network Dashboard
-tag: HTML
-desc: Regional Head / Zonal / Outlet sales performance vs target, with launch-year and directory views.
-embed: https://operations-t.github.io/outlet-network-dashboard/
-repo: https://github.com/operations-t/outlet-network-dashboard
+title: Operations Dashboard
+tag: JavaScript
+desc: Operational Analysis
+embed: https://ops.shwapno.app/
+repo: https://github.com/Shwapno-AI/ops
 live: true
 
 title: SKU Dashboard
@@ -25,20 +25,6 @@ tag: JavaScript
 desc: Regional Head, Zonal, Outlet, Category and SKU performance analysis.
 embed: https://sku_gr.shwapno.app/
 repo: https://github.com/Shwapno-AI/SKU_GR
-live: true
-
-title: Consumable-Wastage
-tag: JavaScript
-desc: Operations performance Consumable & Wastage Control.
-embed: https://operations-t.github.io/consumable-wastage-n/
-repo: https://github.com/operations-t/consumable-wastage-n
-live: true
-
-title: Availability Dashboard
-tag: JavaScript
-desc: Outlet-SKU performance
-embed: https://operations-t.github.io/Availability-Report/
-repo: https://github.com/operations-t/vailability-Report
 live: true
 
 title: Monthly To-Do Tracker
